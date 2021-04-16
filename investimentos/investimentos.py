@@ -51,6 +51,7 @@ class RegistroInvestimento:
     data: datetime
     investimento: Investimento
 
+
 @dataclass
 class Carteira:
     saldo: float = 0

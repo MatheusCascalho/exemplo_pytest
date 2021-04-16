@@ -162,3 +162,56 @@ def test_selic_imposto_a_pagar(periodo, esperado):
 
     # assert
     assert result == esperado
+
+
+def test_imposto_medio():
+    # arrange
+    carteira = Carteira(saldo=5000)
+    dias = [
+        datetime(2020, 12, 1),  # 30 dias
+        datetime(2020, 7, 4),  # 181 dias
+        datetime(2020, 1, 2),  # 365 dias
+        datetime(2019, 1, 2)  # 730 dias
+    ]
+    for dia in dias:
+        selic = Selic(valor_inicial=100, rentabilidade=0.2)
+        carteira.novo_investimento(investimento=selic, data=dia)
+
+    esperado = (0.05 + 0.24 + 0.43 + 0.75) / 4
+
+    result = carteira.imposto_medio(data=datetime(2021, 1, 1))
+
+    assert result == esperado
+
+
+# fixtures
+@pytest.fixture
+def carteira_cheia():
+    carteira = Carteira(saldo=5000)
+    dias = [
+        datetime(2020, 12, 1),  # 30 dias
+        datetime(2020, 7, 4),  # 181 dias
+        datetime(2020, 1, 2),  # 365 dias
+        datetime(2019, 1, 2)  # 730 dias
+    ]
+    for dia in dias:
+        selic = Selic(valor_inicial=100, rentabilidade=0.2)
+        carteira.novo_investimento(investimento=selic, data=dia)
+    return carteira
+
+
+def test_imposto_medio_com_fixture(carteira_cheia):
+    esperado = (0.05 + 0.24 + 0.43 + 0.75) / 4
+
+    result = carteira_cheia.imposto_medio(data=datetime(2021, 1, 1))
+
+    assert result == esperado
+
+
+# raises
+def test_novo_investimento_com_carteira_vazia():
+    carteira = Carteira()
+    investimento = Selic(valor_inicial=100, rentabilidade=0.5)
+    with pytest.raises(Exception) as exc:
+        carteira.novo_investimento(investimento, data=datetime(2021, 1, 1))
+    assert "Não há saldo suficiente" == str(exc.value)
