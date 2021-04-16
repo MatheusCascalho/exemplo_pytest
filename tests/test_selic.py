@@ -127,3 +127,37 @@ def test_selic_imposto_a_pagar_730_dias():
 
     # assert
     assert result == expected
+
+
+# Mark.Parametrize
+
+@pytest.mark.parametrize(("valor_aplicado,periodo,rentabilidade,esperado"), [(100, 30, 0.2, 0.05),
+                                                                             (100, 181, 0.2, 0.24),
+                                                                             (100, 365, 0.2, 0.43),
+                                                                             (100, 730, 0.2, 0.75)])
+def test_selic_imposto_a_pagar(valor_aplicado, periodo, rentabilidade, esperado):
+    # act
+    result = imposto_a_pagar(
+        valor_aplicado=valor_aplicado,
+        periodo=periodo,
+        rentabilidade=rentabilidade
+    )
+
+    # assert
+    assert result == esperado
+
+@pytest.mark.parametrize(("periodo,esperado"), [(30, 0.05),
+                                                (181, 0.24),
+                                                (365, 0.43),
+                                                (730, 0.75)])
+def test_selic_imposto_a_pagar(periodo, esperado):
+    #arrange
+    selic = Selic(valor_inicial=100, rentabilidade=0.2)
+
+    # act
+    result = selic.imposto_a_pagar(
+        periodo=periodo
+    )
+
+    # assert
+    assert result == esperado
