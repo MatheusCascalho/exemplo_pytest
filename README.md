@@ -6,12 +6,12 @@ Testes de cálculo do imposto de renda a pagar com tesouro selic
 
 Regra: atendimento da tabela regressiva. Aliquota aplicada sobre o lucro
 
-| Periodo (dias) | Value |
-|----------------|-------|
-| 180            | 22.5  |
-| 181-360        | 20    |
-| 361-720        | 17.5  |
-| 720+           | 15    |
+| Periodo (dias) | Aliquota (em % a.m) |
+|----------------|---------------------|
+| 180            | 22.5                |
+| 181-360        | 20                  |
+| 361-720        | 17.5                |
+| 720+           | 15                  |
 
 
 Entradas:
