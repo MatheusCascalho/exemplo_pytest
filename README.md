@@ -1,7 +1,9 @@
 # Pytest Example
 
-objetivo do exemplo: mostrar parametrização
+objetivo do exemplo: mostrar parametrização, fixtures e raises do pytest
+
 Testes de cálculo do imposto de renda a pagar com tesouro selic
+
 Regra: atendimento da tabela regressiva. Aliquota aplicada sobre o lucro
 
 | Periodo (dias) | Value |
