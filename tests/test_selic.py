@@ -27,7 +27,7 @@ Saídas:
     - lucro bruto (em reais)
     - lucro liquido (em reais)
 """
-from investimentos.calculadora import *
+from investimentos.calculadora import total_com_juros
 from investimentos.investimentos import Selic, Carteira
 import pytest
 from datetime import datetime, timedelta
@@ -51,102 +51,10 @@ def test_selic_valor_total():
 
     # assert
     assert result == expected
-#
-#
-# def test_selic_imposto_a_pagar_30_dias():
-#     # arrange
-#     valor_aplicado = 100
-#     periodo = 30
-#     rentabilidade = 0.2
-#
-#     expected = 0.05  # 0.2 * 0.225
-#
-#     # act
-#     result = imposto_a_pagar(
-#         valor_aplicado=valor_aplicado,
-#         periodo=periodo,
-#         rentabilidade=rentabilidade
-#     )
-#
-#     # assert
-#     assert result == expected
-#
-#
-# def test_selic_imposto_a_pagar_181_dias():
-#     # arrange
-#     valor_aplicado = 100
-#     periodo = 181
-#     rentabilidade = 0.2
-#
-#     expected = 0.24  # 1.21 * 0.2
-#
-#     # act
-#     result = imposto_a_pagar(
-#         valor_aplicado=valor_aplicado,
-#         periodo=periodo,
-#         rentabilidade=rentabilidade
-#     )
-#
-#     # assert
-#     assert result == expected
-#
-#
-# def test_selic_imposto_a_pagar_365_dias():
-#     # arrange
-#     valor_aplicado = 100
-#     periodo = 365
-#     rentabilidade = 0.2
-#
-#     expected = 0.43  # 2.43 * 0.175
-#
-#     # act
-#     result = imposto_a_pagar(
-#         valor_aplicado=valor_aplicado,
-#         periodo=periodo,
-#         rentabilidade=rentabilidade
-#     )
-#
-#     # assert
-#     assert result == expected
-#
-#
-# def test_selic_imposto_a_pagar_730_dias():
-#     # arrange
-#     valor_aplicado = 100
-#     periodo = 730
-#     rentabilidade = 0.2
-#
-#     expected = 0.75  # 4.91 * 0.15
-#
-#     # act
-#     result = imposto_a_pagar(
-#         valor_aplicado=valor_aplicado,
-#         periodo=periodo,
-#         rentabilidade=rentabilidade
-#     )
-#
-#     # assert
-#     assert result == expected
-#
-#
+
+
 # Mark.Parametrize
 
-# @pytest.mark.parametrize(("valor_aplicado,periodo,rentabilidade,esperado"), [(100, 30, 0.2, 0.05),
-#                                                                              (100, 181, 0.2, 0.24),
-#                                                                              (100, 365, 0.2, 0.43),
-#                                                                              (100, 730, 0.2, 0.74)])
-# def test_selic_imposto_a_pagar(valor_aplicado, periodo, rentabilidade, esperado):
-#     # act
-#     result = imposto_a_pagar(
-#         valor_aplicado=valor_aplicado,
-#         periodo=periodo,
-#         rentabilidade=rentabilidade
-#     )
-#
-#     # assert
-#     assert result == esperado
-#
-#
 @pytest.mark.parametrize(("periodo,esperado"), [(30, 0.05),
                                                 (181, 0.24),
                                                 (365, 0.43),
@@ -162,8 +70,8 @@ def test_selic_imposto_a_pagar(periodo, esperado):
 
     # assert
     assert result == esperado
-#
-#
+
+
 def test_imposto_medio():
     # arrange
     carteira = Carteira(saldo=5000)
@@ -182,24 +90,24 @@ def test_imposto_medio():
     result = carteira.imposto_medio(data=datetime(2021, 1, 1))
 
     assert result == esperado
-#
-#
+
+
 # fixtures
 @pytest.fixture
 def carteira_cheia():
     carteira = Carteira(saldo=5000)
     dias = [
         datetime(2020, 12, 1),  # 30 dias
-        datetime(2020, 7, 4),  # 181 dias
-        datetime(2020, 1, 2),  # 365 dias
-        datetime(2019, 1, 2)  # 730 dias
+        datetime(2020, 7, 4),   # 181 dias
+        datetime(2020, 1, 2),   # 365 dias
+        datetime(2019, 1, 2)    # 730 dias
     ]
     for dia in dias:
         selic = Selic(valor_inicial=100, rentabilidade=0.2)
         carteira.novo_investimento(investimento=selic, data=dia)
     return carteira
-#
-#
+
+
 def test_imposto_medio_com_fixture(carteira_cheia):
     esperado = (0.05 + 0.24 + 0.43 + 0.75) / 4
 
