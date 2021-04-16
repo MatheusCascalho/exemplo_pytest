@@ -146,12 +146,13 @@ def test_selic_imposto_a_pagar(valor_aplicado, periodo, rentabilidade, esperado)
     # assert
     assert result == esperado
 
+
 @pytest.mark.parametrize(("periodo,esperado"), [(30, 0.05),
                                                 (181, 0.24),
                                                 (365, 0.43),
                                                 (730, 0.75)])
 def test_selic_imposto_a_pagar(periodo, esperado):
-    #arrange
+    # arrange
     selic = Selic(valor_inicial=100, rentabilidade=0.2)
 
     # act
